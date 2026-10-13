@@ -83,8 +83,7 @@ export function parseCandles(rows, serverTime) {
   return candles;
 }
 
-// Round the complementary display together so visible scores also total 100.0.
+// Truncate each display independently; keep full precision for calculations.
 export function displayedScores(score) {
-  const long = Number(score.long.toFixed(1));
-  return { long: long.toFixed(1), short: (100 - long).toFixed(1) };
+  return { long: String(Math.floor(score.long)), short: String(Math.floor(score.short)) };
 }

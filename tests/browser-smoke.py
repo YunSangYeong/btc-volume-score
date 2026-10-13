@@ -29,7 +29,8 @@ with sync_playwright() as p:
         assert page.locator('#price').inner_text() == '62,500.00'
         long = float(page.locator('#long-score').inner_text())
         short = float(page.locator('#short-score').inner_text())
-        assert abs(long + short - 100) < .11
+        assert long.is_integer() and short.is_integer()
+        assert long + short in (99, 100)
         assert page.locator('#history tr').count() == 12
         assert page.locator('#chart svg').count() == 1
         assert page.locator('#entry-price').is_disabled()
