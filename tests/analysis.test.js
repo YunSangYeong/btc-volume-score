@@ -91,14 +91,17 @@ test('API 데이터 부족·누락·중복·잘못된 OHLCV·최신 누락 오�
   }
 });
 
-test('롱·숏 표시 소수점 절사, 원본 점수 유지', () => {
+test('롱·숏 정수 반올림 표시 합계 100, 원본 점수 유지', () => {
   for (const [long, short, expectedLong, expectedShort] of [
-    [40.1, 59.9, '40', '59'], [40.9, 59.1, '40', '59'],
+    [40.1, 59.9, '40', '60'], [40.9, 59.1, '41', '59'],
+    [41.5, 58.5, '42', '58'], [41.49, 58.51, '41', '59'],
+    [0.5, 99.5, '1', '99'], [99.5, 0.5, '100', '0'],
     [50, 50, '50', '50'], [0, 100, '0', '100'], [100, 0, '100', '0'],
-    [69.96, 30.04, '69', '30']
+    [69.96, 30.04, '70', '30']
   ]) {
     const score = { long, short };
     assert.deepEqual(displayedScores(score), { long: expectedLong, short: expectedShort });
+    assert.equal(Number(expectedLong) + Number(expectedShort), 100);
     assert.deepEqual(score, { long, short });
     near(score.long + score.short, 100);
   }

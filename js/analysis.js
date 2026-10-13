@@ -83,7 +83,8 @@ export function parseCandles(rows, serverTime) {
   return candles;
 }
 
-// Truncate each display independently; keep full precision for calculations.
+// Round long once and complement short so displayed scores always sum to 100.
 export function displayedScores(score) {
-  return { long: String(Math.floor(score.long)), short: String(Math.floor(score.short)) };
+  const long = Math.round(score.long);
+  return { long: String(long), short: String(100 - long) };
 }
