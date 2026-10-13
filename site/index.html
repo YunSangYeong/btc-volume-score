@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bybit BTCUSDT 무기한 선물 15분봉 가격·거래량 기반 실험적 분석 도구">
+  <meta name="theme-color" content="#111718">
+  <title>BTC 4원칙 점수 분석기</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">₿</span><span>VOLUME <b>SCORE</b><small>BTC 4원칙 점수 분석기</small></span></a><span class="version">ANALYSIS ONLY <b>v1.0</b></span></header>
+  <main>
+    <section class="market-head">
+      <div><div class="eyebrow">BYBIT · USDT PERPETUAL <span class="pill">15분봉</span></div><h1>BTC<span class="muted"> / USDT</span></h1><div class="price"><span id="price">—</span><small>USDT</small></div></div>
+      <div class="refresh-block"><button id="refresh" type="button">↻ <span>데이터 갱신</span></button><p id="status" role="status">공개 API 연결 준비 중</p><p class="time">분석 기준 <span id="analysis-time">—</span><br>조회 시각 <span id="fetch-time">—</span></p></div>
+    </section>
+    <div id="error" class="error" role="alert" hidden></div>
+    <div class="section-label"><span>01 / MARKET SIGNAL</span><span>완료된 최근 50봉 기준</span></div>
+    <section class="score-grid">
+      <article class="card score-card long"><div class="card-label">LONG SCORE <span>롱</span></div><div class="big-score"><span id="long-score">—</span><small>/ 100</small></div><div class="meter"><span id="long-bar"></span></div><p>가격과 거래량으로 읽는 매수 방향</p></article>
+      <article class="card score-card short"><div class="card-label">SHORT SCORE <span>숏</span></div><div class="big-score"><span id="short-score">—</span><small>/ 100</small></div><div class="meter"><span id="short-bar"></span></div><p>롱 점수와 합계 100인 보완 점수</p></article>
+      <article class="card signal-card"><div class="card-label">ENTRY SIGNAL <span class="signal-dot"></span></div><h2 id="decision">분석 준비 중</h2><p id="decision-note">완료 봉 데이터를 불러온 뒤 판단합니다.</p><div class="recent"><span>최근 10봉 방향</span><strong id="recent">—</strong></div><small>70 / 30 기준 · 변화량 ±3 · 최근 10봉 우세</small></article>
+    </section>
+    <section class="card chart-card"><div class="chart-heading"><div><div class="card-label">SCORE MOMENTUM</div><h2>점수의 흐름 <span>롱 점수</span></h2></div><div class="deltas"><div><small>직전 15분 대비</small><strong id="delta-15">—</strong></div><div><small>1시간 전 대비</small><strong id="delta-hour">—</strong></div></div></div><div class="chart-wrap" id="chart"><p class="empty">실제 데이터를 조회하면 점수 차트가 표시됩니다.</p></div><div class="chart-foot"><span><i class="legend-dot"></i> 완료 봉 기준 · 최근 48개 시점</span><span>70 이상 롱 영역 / 30 이하 숏 영역</span></div></section>
+    <div class="section-label"><span>02 / POSITION & RISK</span><span>자동 주문 없이 판단 보조만 제공</span></div>
+    <section class="manage-grid">
+      <article class="card position-card"><div class="card-label">MY POSITION</div><h2>보유 포지션 관리</h2><fieldset><legend class="sr-only">현재 포지션 선택</legend><div class="position-switch"><label><input type="radio" name="position" value="none" checked><span>포지션 없음</span></label><label><input type="radio" name="position" value="long"><span>롱 보유</span></label><label><input type="radio" name="position" value="short"><span>숏 보유</span></label></div></fieldset><label class="input-label" for="entry-price">나의 진입가 <span>USDT</span></label><input id="entry-price" type="number" min="0.01" step="any" inputmode="decimal" placeholder="보유 포지션의 진입가 입력" disabled><p id="position-note">포지션을 선택하면 보유 판단을 확인할 수 있습니다.</p><div class="position-result"><span>보유 판단</span><strong id="position-decision">포지션 없음</strong></div></article>
+      <article class="card risk-card"><div class="card-label">RISK PLAN <span>1 : 2</span></div><h2>손절가 & 목표가</h2><p class="subtext">ATR(14) × 1.5 · Wilder 방식 · USDT</p><div class="atr-row"><span>ATR(14)</span><strong id="atr">—</strong><span>손절 거리</span><strong id="distance">—</strong></div><div id="levels"><p class="empty">데이터 조회 후 롱·숏 참고 가격을 표시합니다.</p></div><p class="risk-caption" id="risk-caption">포지션 없음: 최신 완료 봉 종가 기준 참고 가격</p></article>
+    </section>
+    <div class="section-label"><span>03 / ANALYSIS DETAILS</span><span>가중치와 원본 데이터 확인</span></div>
+    <section class="details-grid">
+      <article class="card"><div class="card-label">THE FOUR PRINCIPLES</div><h2>4원칙별 기여도</h2><p class="subtext">중립 50점에 더해지는 점수 · 단위 p</p><div id="contributions" class="contributions"><p class="empty">분석 데이터 대기 중</p></div><p class="subtext">도지와 거래량 동일 봉은 중립 처리됩니다.</p></article>
+      <article class="card"><div class="card-label">LATEST CLOSED CANDLE</div><h2>가격 · 거래량 데이터</h2><dl class="ohlcv" id="ohlcv"><dt>완료 봉 데이터</dt><dd>—</dd></dl><p class="subtext">거래량: Bybit linear BTCUSDT의 BTC 단위<br>거래대금(USDT)은 점수 계산에 사용하지 않습니다.</p></article>
+    </section>
+    <section class="card history-card"><div class="card-label">ANALYSIS LOG</div><h2>최근 분석 기록</h2><p class="subtext">각 시점까지 완료된 50봉으로 계산 · 최신 12개 시점</p><div class="table-scroll"><table><thead><tr><th>분석 기준 (KST)</th><th>종가 (USDT)</th><th>거래량 (BTC)</th><th>롱 / 숏</th><th>변화</th><th>신규 진입</th></tr></thead><tbody id="history"><tr><td colspan="6" class="empty">아직 조회된 기록이 없습니다.</td></tr></tbody></table></div></section>
+    <details class="method card"><summary>점수 계산 기준 보기</summary><p>각 봉의 점수 = 방향(롱 +1 / 숏 −1) × 거래량 가중치 × 몸통 가중치 × 시간 가중치. 롱 점수 = 50 + 50 × 가중합, 숏 점수 = 100 − 롱 점수.</p><p>거래량 변화 절댓값: 10% 미만 0.25 / 30% 미만 0.50 / 60% 미만 0.75 / 그 외 1.00. 몸통 비율: 20% 미만 0.25 / 40% 미만 0.50 / 70% 미만 0.75 / 그 외 1.00.</p><p>최근 1~10봉 40%, 11~20봉 25%, 21~30봉 15%, 31~40봉 12%, 41~50봉 8%. 각 구간 내부는 동일 가중치. 최근 10봉은 가중치 합계 1로 재정규화합니다. 판단은 반올림 전 점수를 사용합니다.</p></details>
+    <aside class="disclaimer"><strong>실험적 분석 도구</strong><p>점수와 판단 기준은 백테스트 전의 실험적 기준이며 투자 수익을 보장하지 않습니다. 거래 수수료·슬리피지·펀딩비를 반영하지 않습니다. 손절·목표가는 참고 정보이며 자동 주문으로 실행되지 않습니다.</p></aside>
+  </main><footer><span>BTC VOLUME SCORE</span><span>공개 데이터 · 분석 전용 · API 키 불필요</span></footer>
+</div><script type="module" src="js/app.js"></script>
+</body></html>
